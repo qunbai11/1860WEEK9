@@ -4,17 +4,15 @@ CHIP P2S {
 
     PARTS:
     // Register to store the 4-bit input data when load is asserted
-    Register(in=indata, load=load, out=data_out);
+    Register(in=indata, load=load, out=data_out[4]);
 
-    // Counter to track which bit to output
-    Counter(increment=enable, reset=load, out=counter_value);
+    // Counter to track which bit to output (only needs 2 bits for 4 states)
+    Counter(increment=enable, reset=load, out=counter_value[2]);
 
     // Multiplexer to select which bit of the stored data to output
-    Mux4Way16(in=data_out, sel=counter_value[1..0], out=selected_bit);
-
-    // Logic for serial output
-    And(a=enable, b=selected_bit, out=sout);
+    Mux4Way(in=data_out[0], in=data_out[1], in=data_out[2], in=data_out[3], 
+            sel=counter_value, out=sout);
 
     // Logic for 'complete' signal: activate after all 4 bits are transmitted
-    And(a=counter_value[1..0] == 3, out=complete);
+    And(a=counter_value[1..0] == 3, b=enable, out=complete);
 }
