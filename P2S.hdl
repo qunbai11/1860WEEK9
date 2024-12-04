@@ -3,15 +3,22 @@ CHIP P2S {
     OUT sout, complete;
 
     PARTS:
-    // Register: Store the 4-bit input data with zero padding to fit 16-bit bus
-    Register(in[16]=[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, indata[0], indata[1], indata[2], indata[3]], 
-             load=load, out[16]=data_out);
+    // Register: Store the 4-bit input data, padded to 16 bits
+    Register(
+        in=[false, false, false, false, false, false, false, false, false, false, false, false, indata[0], indata[1], indata[2], indata[3]],
+        load=load,
+        out=data_out[16]
+    );
 
     // Counter: Keep track of which bit to output
     Counter(increment=enable, reset=load, out=counter_value[2]);
 
     // Multiplexer: Select the bit to output based on counter_value
-    Mux4Way16(in[0..3]=data_out[0..3], sel=counter_value, out=sout);
+    Mux4Way16(
+        in[0..3]=data_out[12..15], 
+        sel=counter_value, 
+        out=sout
+    );
 
     // Complete signal: Activate when all 4 bits have been output
     Equal(a=counter_value, b=3, out=completed_cycle);
