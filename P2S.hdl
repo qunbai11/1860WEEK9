@@ -3,9 +3,11 @@ CHIP P2S {
     OUT sout, complete;
 
     PARTS:
-    // Register: Store the 4-bit input data, padded with zeroes
+    // Create a constant bus with zero values for padding
+    // 12-bit zero padding using an explicit wiring
     Register(
-        in=[false, false, false, false, false, false, false, false, false, false, false, false, indata[0], indata[1], indata[2], indata[3]],
+        in=[false, false, false, false, false, false, false, false, false, false, false, false, 
+            indata[0], indata[1], indata[2], indata[3]],
         load=load,
         out=data_out
     );
