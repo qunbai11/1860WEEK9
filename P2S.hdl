@@ -4,8 +4,9 @@ CHIP P2S {
 
     PARTS:
     // Register: Store the 4-bit input data, padded to 16 bits
+    // Replace `false` with explicit 0 values for padding
     Register(
-        in=[false, false, false, false, false, false, false, false, false, false, false, false, indata[0], indata[1], indata[2], indata[3]],
+        in=[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, indata[0], indata[1], indata[2], indata[3]],
         load=load,
         out=data_out
     );
