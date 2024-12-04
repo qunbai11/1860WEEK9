@@ -7,15 +7,18 @@ CHIP P2S {
     Register(
         in=[false, false, false, false, false, false, false, false, false, false, false, false, indata[0], indata[1], indata[2], indata[3]],
         load=load,
-        out=data_out[16]
+        out=data_out
     );
 
     // Counter: Keep track of which bit to output
-    Counter(increment=enable, reset=load, out=counter_value[2]);
+    Counter(increment=enable, reset=load, out=counter_value);
 
     // Multiplexer: Select the bit to output based on counter_value
     Mux4Way16(
-        in[0..3]=data_out[12..15], 
+        in[0]=data_out[12], 
+        in[1]=data_out[13], 
+        in[2]=data_out[14], 
+        in[3]=data_out[15], 
         sel=counter_value, 
         out=sout
     );
