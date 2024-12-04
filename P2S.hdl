@@ -3,12 +3,9 @@ CHIP P2S {
     OUT sout, complete;
 
     PARTS:
-    // Create a constant 16-bit bus for zero-padding
-    Or16Way(in=false, out=zero_16bit[16]); // 16-bit constant bus of all false (0)
-
     // Register: Store the 4-bit input data, padded with zeroes
     Register(
-        in=[zero_16bit[0..11], indata[0], indata[1], indata[2], indata[3]],
+        in=[false, false, false, false, false, false, false, false, false, false, false, false, indata[0], indata[1], indata[2], indata[3]],
         load=load,
         out=data_out
     );
